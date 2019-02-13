@@ -6,11 +6,17 @@ from quickSeuil import quickSortSeuil
 from quickRandomSeuil import quickSortRandomSeuil
 from counting import countingSort
 
-#ex_path = sys.argv[1] # Path de l'exemplaire
 def read_integers(filename):
     with open(filename) as f:
         array = list(map(int, f))
         return array
+
+ex_path = sys.argv[1] # Path de l'exemplaire
+options = sys.argv[2:]
+#if '-p' in options: # On imprime les nombres triés
+#    print("1 2 3 4 7") # Données bidon, mais output du bon format demandé
+#if '-t' in options: # On imprime le temps d'exécution
+#    print("4.1347628746") # Données bidon, mais output du bon format demandé
 
 # Algo ici
 sizes = [1000, 5000, 10000, 50000, 100000, 500000]
@@ -36,15 +42,15 @@ times3 = [] # quickRandomSeuil
 times4 = [] # coutning
 
 # open csv file to write results
-with open('results.csv', 'w', newline='') as myfile:
+with open('results' + input + '.csv', 'w', newline='') as myfile:
     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
     wr.writerow(sizes)
 
 for size in sizes:
-    sortTime1 = 0
-    sortTime2 = 0
-    sortTime3 = 0
-    sortTime4 = 0
+    sortTime1 = 0.0
+    sortTime2 = 0.0
+    sortTime3 = 0.0
+    sortTime4 = 0.0
     for test in range(testset[0], testset[1]):
         file = "exemplaires/testset_" + str(size) + "_" + str(test) + ".txt"
         # execute the algorithms 
@@ -78,13 +84,13 @@ for size in sizes:
         endTime4 = time.time()
         sortTime4 += endTime4 - startTime4
     
-    sortTime1 = round(sortTime1/10, 6)
+    sortTime1 = round(sortTime1/10, 10)
     times1.append(sortTime1)
-    sortTime2 = round(sortTime2/10, 6)
+    sortTime2 = round(sortTime2/10, 10)
     times2.append(sortTime2)
-    sortTime3 = round(sortTime3/10, 6)
+    sortTime3 = round(sortTime3/10, 10)
     times3.append(sortTime3)
-    sortTime4 = round(sortTime4/10, 6)
+    sortTime4 = round(sortTime4/10, 10)
     times4.append(sortTime4)
 
 with open('results.csv', 'a', newline='') as myfile:
@@ -93,10 +99,3 @@ with open('results.csv', 'a', newline='') as myfile:
     wr.writerow(times2)
     wr.writerow(times3)
     wr.writerow(times4)
-
-
-#options = sys.argv[2:]
-#if '-p' in options: # On imprime les nombres triés
-#    print("1 2 3 4 7") # Données bidon, mais output du bon format demandé
-#if '-t' in options: # On imprime le temps d'exécution
-#    print("4.1347628746") # Données bidon, mais output du bon format demandé

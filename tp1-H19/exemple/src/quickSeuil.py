@@ -1,3 +1,11 @@
+import sys
+import time
+
+def read_integers(filename):
+    with open(filename) as f:
+        array = list(map(int, f))
+        return array
+
 def quickSortSeuil(array, start, end):
     if (end - start) <= 5:
         pivot = array[start]
@@ -22,3 +30,21 @@ def insertionSort(array, start, end):
             array[j + 1] = array[j] 
             j -= 1
         array[j + 1] = pivot
+
+ex_path = sys.argv[1] # Path de l'exemplaire
+options = sys.argv[2:]
+# Algo ici
+file = ex_path
+# execute the algorithms 
+# quickSortSeuil
+sortTime = 0.0
+array = read_integers(file)
+startTime = time.time()
+quickSortSeuil(array, 0, len(array) - 1)
+endTime = time.time()
+sortTime = endTime - startTime
+
+if '-p' in options: # On imprime les nombres triés
+    print(array)
+if '-t' in options: # On imprime le temps d'exécution
+    print(round(sortTime, 10))
