@@ -11,8 +11,8 @@ def read_integers(filename):
         array = list(map(int, f))
         return array
 
-ex_path = sys.argv[1] # Path de l'exemplaire
-options = sys.argv[2:]
+#ex_path = sys.argv[1]
+#options = sys.argv[2:]
 #if '-p' in options: # On imprime les nombres triés
 #    print("1 2 3 4 7") # Données bidon, mais output du bon format demandé
 #if '-t' in options: # On imprime le temps d'exécution
@@ -36,15 +36,16 @@ while True:
         print("Invalid testset!")
 
 # temp matrix to store algo execution times
-times1 = [] # quick
-times2 = [] # quickSeuil
-times3 = [] # quickRandomSeuil
-times4 = [] # coutning
+times1 = ["quickSort"] # quick
+times2 = ["quickSortSeuil"] # quickSeuil
+times3 = ["quickSortRandomSeuil"] # quickRandomSeuil
+times4 = ["countingSort"] # coutning
 
 # open csv file to write results
 with open('results' + input + '.csv', 'w', newline='') as myfile:
+    columnTitles = ["Sample_Sizes", "QuickSort", "QuickSortSeuil", "QuickSortRandomSeuil", "CountingSort"]
     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-    wr.writerow(sizes)
+    wr.writerow(columnTitles)
 
 for size in sizes:
     sortTime1 = 0.0
@@ -93,9 +94,14 @@ for size in sizes:
     sortTime4 = round(sortTime4/10, 10)
     times4.append(sortTime4)
 
-with open('results.csv', 'a', newline='') as myfile:
+with open('results' + input + '.csv', 'a', newline='') as myfile:
     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-    wr.writerow(times1)
-    wr.writerow(times2)
-    wr.writerow(times3)
-    wr.writerow(times4)
+    for i in range(0, len(sizes)):
+        resultsRow = []
+        resultsRow.append(sizes[i])
+        resultsRow.append(times1[i])
+        resultsRow.append(times2[i])
+        resultsRow.append(times3[i])
+        resultsRow.append(times4[i])
+        wr.writerow(resultsRow)
+    

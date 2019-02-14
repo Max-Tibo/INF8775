@@ -18,20 +18,21 @@ def countingSort(array):
         for j in range(tempArray[i]):
             array.append(i)
 
-ex_path = sys.argv[1] # Path de l'exemplaire
-options = sys.argv[2:]
-# Algo ici
-file = ex_path
-# execute the algorithms 
-# countingSort
-sortTime = 0.0
-array = read_integers(file)
-startTime = time.time()
-countingSort(array)
-endTime = time.time()
-sortTime = endTime - startTime
+if len(sys.argv) > 1:
+    ex_path = sys.argv[1] # Path de l'exemplaire
+    options = sys.argv[2:]
+    # Algo ici
+    file = ex_path
+    # execute the algorithms 
+    # countingSort
+    sortTime = 0.0
+    array = read_integers(file)
+    startTime = time.time()
+    countingSort(array)
+    endTime = time.time()
+    sortTime = endTime - startTime
 
-if '-p' in options: # On imprime les nombres triés
-    print(array)
-if '-t' in options: # On imprime le temps d'exécution
-    print(round(sortTime, 10))
+    if '-p' in options: # On imprime les nombres triés
+        print(array)
+    if '-t' in options: # On imprime le temps d'exécution
+        print(round(sortTime, 10))
