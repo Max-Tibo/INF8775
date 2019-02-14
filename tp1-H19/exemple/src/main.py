@@ -1,6 +1,9 @@
 import sys
 import time
 import csv
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
 from quick import quickSort
 from quickSeuil import quickSortSeuil
 from quickRandomSeuil import quickSortRandomSeuil
@@ -11,6 +14,15 @@ def read_integers(filename):
         array = list(map(int, f))
         return array
 
+def power_test(csvfile):
+    df = pd.read_csv(csvfile).groupby(['Sample_Sizes','Algorithms']).mean().reset_index()
+
+    g = sns.FacetGrid(df, hue='Algorithms', size=4, aspect=1)
+    g = g.map(plt.plot, 'Sample_Sizes', 'Times')
+    g.set(xscale='log')
+    g.set(yscale='log')
+    g.add_legend()
+    plt.savefig('test_puissance')
 #ex_path = sys.argv[1]
 #options = sys.argv[2:]
 #if '-p' in options: # On imprime les nombres triés
@@ -43,7 +55,7 @@ times4 = [] # coutning
 
 # open csv file to write results
 with open('results' + input + '.csv', 'w', newline='') as myfile:
-    columnTitles = ["Sample_Sizes", "QuickSort", "QuickSortSeuil", "QuickSortRandomSeuil", "CountingSort"]
+    columnTitles = ["Sample_Sizes", "Algorithms", "Times"]
     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
     wr.writerow(columnTitles)
 
@@ -85,23 +97,38 @@ for size in sizes:
         endTime4 = time.time()
         sortTime4 += endTime4 - startTime4
     
-    sortTime1 = round(sortTime1/10, 10)
+    sortTime1 = round(1000 * sortTime1/10, 3)
     times1.append(sortTime1)
-    sortTime2 = round(sortTime2/10, 10)
+    sortTime2 = round(1000 * sortTime2/10, 3)
     times2.append(sortTime2)
-    sortTime3 = round(sortTime3/10, 10)
+    sortTime3 = round(1000 * sortTime3/10, 3)
     times3.append(sortTime3)
-    sortTime4 = round(sortTime4/10, 10)
+    sortTime4 = round(1000 * sortTime4/10, 3)
     times4.append(sortTime4)
 
 with open('results' + input + '.csv', 'a', newline='') as myfile:
     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
     for i in range(0, len(sizes)):
-        resultsRow = []
-        resultsRow.append(sizes[i])
-        resultsRow.append(times1[i])
-        resultsRow.append(times2[i])
-        resultsRow.append(times3[i])
-        resultsRow.append(times4[i])
-        wr.writerow(resultsRow)
-    
+        resultRow = []
+        resultRow.append(sizes[i])
+        resultRow.append("QuickSort")
+        resultRow.append(times1[i])
+        wr.writerow(resultRow)
+        resultRow.clear()
+        resultRow.append(sizes[i])
+        resultRow.append("QuickSortSeuil")
+        resultRow.append(times2[i])
+        wr.writerow(resultRow)
+        resultRow.clear()  
+        resultRow.append(sizes[i])      
+        resultRow.append("QuickSortRandomSeuil")
+        resultRow.append(times3[i])
+        wr.writerow(resultRow)
+        resultRow.clear()
+        resultRow.append(sizes[i])
+        resultRow.append("CountingSort")
+        resultRow.append(times4[i])
+        wr.writerow(resultRow)
+        resultRow.clear()        
+
+power_test('results' + input + '.csv')

@@ -6,6 +6,7 @@ def read_integers(filename):
         array = list(map(int, f))
         return array
 
+# https://www.geeksforgeeks.org/counting-sort/
 def countingSort(array):
     maxValue = max(array)
     tempArray = [0 for x in range(maxValue + 1)]
