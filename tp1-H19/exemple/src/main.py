@@ -14,21 +14,17 @@ def read_integers(filename):
         array = list(map(int, f))
         return array
 
+# create the power test from a results csv file
+# based on the moodle "guide bash"
 def power_test(csvfile):
     df = pd.read_csv(csvfile).groupby(['Sample_Sizes','Algorithms']).mean().reset_index()
 
-    g = sns.FacetGrid(df, hue='Algorithms', size=4, aspect=1)
+    g = sns.FacetGrid(df, hue='Algorithms', height=6, aspect=1)
     g = g.map(plt.plot, 'Sample_Sizes', 'Times')
     g.set(xscale='log')
     g.set(yscale='log')
     g.add_legend()
     plt.savefig('test_puissance')
-#ex_path = sys.argv[1]
-#options = sys.argv[2:]
-#if '-p' in options: # On imprime les nombres triés
-#    print("1 2 3 4 7") # Données bidon, mais output du bon format demandé
-#if '-t' in options: # On imprime le temps d'exécution
-#    print("4.1347628746") # Données bidon, mais output du bon format demandé
 
 # Algo ici
 sizes = [1000, 5000, 10000, 50000, 100000, 500000]
