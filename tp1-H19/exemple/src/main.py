@@ -36,10 +36,10 @@ while True:
         print("Invalid testset!")
 
 # temp matrix to store algo execution times
-times1 = ["quickSort"] # quick
-times2 = ["quickSortSeuil"] # quickSeuil
-times3 = ["quickSortRandomSeuil"] # quickRandomSeuil
-times4 = ["countingSort"] # coutning
+times1 = [] # quick
+times2 = [] # quickSeuil
+times3 = [] # quickRandomSeuil
+times4 = [] # coutning
 
 # open csv file to write results
 with open('results' + input + '.csv', 'w', newline='') as myfile:
