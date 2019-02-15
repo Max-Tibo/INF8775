@@ -61,7 +61,7 @@ for size in sizes:
     sortTime3 = 0.0
     sortTime4 = 0.0
     for test in range(testset[0], testset[1]):
-        file = "exemplaires/testset_" + str(size) + "_" + str(test) + ".txt"
+        file = "../../exemplaires/testset_" + str(size) + "_" + str(test) + ".txt"
         # execute the algorithms 
         # quickSort
         array1 = read_integers(file)
