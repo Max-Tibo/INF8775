@@ -16,7 +16,7 @@ def read_integers(filename):
 
 # create the power test from a results csv file
 # based on the moodle "guide bash"
-def power_test(csvfile):
+def power_test(csvfile, serie):
     df = pd.read_csv(csvfile).groupby(['Sample_Sizes','Algorithms']).mean().reset_index()
 
     g = sns.FacetGrid(df, hue='Algorithms', height=6, aspect=1)
@@ -24,7 +24,7 @@ def power_test(csvfile):
     g.set(xscale='log')
     g.set(yscale='log')
     g.add_legend()
-    plt.savefig('test_puissance')
+    plt.savefig('test_puissance' + serie)
 
 # Algo ici
 sizes = [1000, 5000, 10000, 50000, 100000, 500000]
@@ -65,33 +65,21 @@ for size in sizes:
         # execute the algorithms 
         # quickSort
         array1 = read_integers(file)
-        startTime1 = time.time()
-        quickSort(array1, 0, len(array1) - 1)
-        endTime1 = time.time()
-        sortTime1 += endTime1 - startTime1
+        sortTime1 = quickSort(array1)
 
         # quickSort with seuil
         array2 = read_integers(file)
-        startTime2 = time.time()
-        quickSortSeuil(array1, 0, len(array1) - 1)
-        endTime2 = time.time()
-        sortTime2 = endTime2 - startTime2
+        sorTime2 = quickSortSeuil(array2)
 
         # quickSort with seuil and random pivot
         for i in range(0, 10):
             array3 = read_integers(file)
-            startTime3 = time.time()
-            quickSortRandomSeuil(array1, 0, len(array1) - 1)
-            endTime3 = time.time()
-            sortTime3 += endTime3 - startTime3
+            sortTime3 += quickSortRandomSeuil(array3)
         sortTime3 += (sortTime3/10)
 
         # countingSort
         array4 = read_integers(file)
-        startTime4 = time.time()
-        countingSort(array4)
-        endTime4 = time.time()
-        sortTime4 += endTime4 - startTime4
+        sortTime4 = countingSort(array4)
     
     sortTime1 = round(1000 * sortTime1/10, 3)
     times1.append(sortTime1)
@@ -127,4 +115,4 @@ with open('results' + input + '.csv', 'a', newline='') as myfile:
         wr.writerow(resultRow)
         resultRow.clear()        
 
-power_test('results' + input + '.csv')
+power_test('results' + input + '.csv', input)

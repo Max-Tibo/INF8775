@@ -8,16 +8,24 @@ def read_integers(filename):
 
 # https://www.geeksforgeeks.org/counting-sort/
 def countingSort(array):
+    elapsedTime = 0.0
+    startTime = time.time()
     maxValue = max(array)
-    tempArray = [0 for x in range(maxValue + 1)]
+    if maxValue < 2147483647:
+        tempArray = [0 for x in range(maxValue + 1)]
 
-    for value in array:
-        tempArray[value] += 1
-    
-    array.clear()
-    for i in range(maxValue + 1):
-        for j in range(tempArray[i]):
-            array.append(i)
+        for value in array:
+            tempArray[value] += 1
+        
+        array.clear()
+        for i in range(maxValue + 1):
+            for j in range(tempArray[i]):
+                array.append(i)
+        endTime = time.time()
+        elapsedTime = endTime - startTime
+        return elapsedTime
+    else:
+        return 0.0
 
 if len(sys.argv) > 1:
     ex_path = sys.argv[1] # Path de l'exemplaire
@@ -28,10 +36,7 @@ if len(sys.argv) > 1:
     # countingSort
     sortTime = 0.0
     array = read_integers(file)
-    startTime = time.time()
-    countingSort(array)
-    endTime = time.time()
-    sortTime = endTime - startTime
+    sortTime = countingSort(array)
 
     if '-p' in options: # On imprime les nombres triés
         print(array)

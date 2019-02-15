@@ -6,7 +6,7 @@ def read_integers(filename):
         array = list(map(int, f))
         return array
 
-def quickSort(array, start, end):
+def sortingAlgo(array, start, end):
     if start < end:
         pivot = array[start]
         index = start
@@ -16,8 +16,16 @@ def quickSort(array, start, end):
                 array[index], array[i] = array[i], array[index]
 
         array[start], array[index] = array[index], array[start]
-        quickSort(array, start, index - 1)
-        quickSort(array, index + 1, end)
+        sortingAlgo(array, start, index - 1)
+        sortingAlgo(array, index + 1, end)
+
+def quickSort(array):
+    elapsedTime = 0.0
+    startTime = time.time()
+    sortingAlgo(array, 0, len(array) - 1)
+    endTime = time.time()
+    elapsedTime = endTime - startTime
+    return elapsedTime
 
 if len(sys.argv) > 1:
     ex_path = sys.argv[1] # Path de l'exemplaire
@@ -29,9 +37,7 @@ if len(sys.argv) > 1:
     sortTime = 0.0
     array = read_integers(file)
     startTime = time.time()
-    quickSort(array, 0, len(array) - 1)
-    endTime = time.time()
-    sortTime = endTime - startTime
+    sortTime = quickSort(array)
 
     if '-p' in options: # On imprime les nombres triés
         print(array)

@@ -7,7 +7,7 @@ def read_integers(filename):
         array = list(map(int, f))
         return array
 
-def quickSortRandomSeuil(array, start, end):
+def sortingAlgo(array, start, end):
     rand = randint(start, end)
     if (end - start) <= 5:
         pivot = array[rand]
@@ -18,10 +18,18 @@ def quickSortRandomSeuil(array, start, end):
                 array[index], array[i] = array[i], array[index]
 
         array[start], array[index] = array[index], array[start]
-        quickSortRandomSeuil(array, start, index - 1)
-        quickSortRandomSeuil(array, index + 1, end)
+        sortingAlgo(array, start, index - 1)
+        sortingAlgo(array, index + 1, end)
     else:
         insertionSort(array, start, end)
+
+def quickSortRandomSeuil(array):
+    elapsedTime = 0.0
+    startTime = time.time()
+    sortingAlgo(array, 0, len(array) - 1)
+    endTime = time.time()
+    elapsedTime = endTime - startTime
+    return elapsedTime
 
 # https://www.geeksforgeeks.org/insertion-sort/
 def insertionSort(array, start, end): 
@@ -43,10 +51,7 @@ if len(sys.argv) > 1:
     for i in range(0, 10):
         sortTime = 0.0
         array = read_integers(file)
-        startTime = time.time()
-        quickSortRandomSeuil(array, 0, len(array) - 1)
-        endTime = time.time()
-        sortTime += endTime - startTime
+        sortTime += quickSortRandomSeuil(array)
     sortTime = round(sortTime/10, 10)
 
     if '-p' in options: # On imprime les nombres triés
