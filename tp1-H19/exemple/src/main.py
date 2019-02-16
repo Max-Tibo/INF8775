@@ -61,6 +61,7 @@ for size in sizes:
     sortTime2 = 0.0
     sortTime3 = 0.0
     sortTime4 = 0.0
+    countingSortErr = 0
     for test in range(testset[0], testset[1]):
         file = "../../exemplaires/testset_" + str(size) + "_" + str(test) + ".txt"
         array = []
@@ -68,11 +69,11 @@ for size in sizes:
         # execute the algorithms 
         # quickSort
         array = deepcopy(tempArray)
-        sortTime1 = quickSort(array)
+        sortTime1 += quickSort(array)
 
         # quickSort with seuil
         array = deepcopy(tempArray)
-        sortTime2 = quickSortSeuil(array)
+        sortTime2 += quickSortSeuil(array)
 
         # quickSort with seuil and random pivot
         for i in range(0, 10):
@@ -81,8 +82,13 @@ for size in sizes:
         sortTime3 += (sortTime3/10)
 
         # countingSort
+        tmpTime = 0.0
         array = deepcopy(tempArray)
-        sortTime4 = countingSort(array)
+        tmpTime = countingSort(array)
+        if tmpTime > 0:
+            sortTime4 += tmpTime
+        else:
+            countingSortErr += 1
     
     sortTime1 = round(1000 * sortTime1/10, 3)
     times1.append(sortTime1)
@@ -90,7 +96,7 @@ for size in sizes:
     times2.append(sortTime2)
     sortTime3 = round(1000 * sortTime3/10, 3)
     times3.append(sortTime3)
-    sortTime4 = round(1000 * sortTime4/10, 3)
+    sortTime4 = round(1000 * sortTime4/(10 - countingSortErr), 3)
     times4.append(sortTime4)
 
 with open('results' + input + '.csv', 'a', newline='') as myfile:

@@ -8,7 +8,7 @@ def read_integers(filename):
         return array
 
 def sortingAlgo(array, start, end):
-    if (end - start) >= 100:
+    if (end - start) >= 24:
         rand = randint(start, end)
         pivot = array[rand]
         index = start
