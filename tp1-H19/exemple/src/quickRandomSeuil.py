@@ -9,7 +9,7 @@ def read_integers(filename):
 
 def sortingAlgo(array, start, end):
     rand = randint(start, end)
-    if (end - start) <= 5:
+    if (end - start) <= 100:
         pivot = array[rand]
         index = start
         for i in range (start + 1, end + 1):            
