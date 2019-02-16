@@ -111,7 +111,9 @@ with open('results' + input + '.csv', 'w', newline='') as myfile:
         times2.append(sortTime2)
         sortTime3 = round(sortTime3/10, 3)
         times3.append(sortTime3)
-        sortTime4 = round(sortTime4/(10 - countingSortErr), 3)
+        if countingSortErr < 10:
+            sortTime4 = round(sortTime4/(10 - countingSortErr), 3)
+        else: sortTime4 = 0.0
         times4.append(sortTime4)
 
     wr.writerow(columnTitles)
