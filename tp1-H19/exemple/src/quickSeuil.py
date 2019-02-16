@@ -7,7 +7,7 @@ def read_integers(filename):
         return array
 
 def sortingAlgo(array, start, end):
-    if (end - start) <= 100:
+    if (end - start) >= 100:
         pivot = array[start]
         index = start
         for i in range (start + 1, end + 1):            
