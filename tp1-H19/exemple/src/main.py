@@ -66,22 +66,22 @@ for size in sizes:
         tempArray = read_integers(file)
         # execute the algorithms 
         # quickSort
-        array1 = deepcopy(tempArray)
-        sortTime1 = quickSort(array1)
+        array = deepcopy(tempArray)
+        sortTime1 = quickSort(array)
 
         # quickSort with seuil
-        array2 = deepcopy(tempArray)
-        sortTime2 = quickSortSeuil(array2)
+        array = deepcopy(tempArray)
+        sortTime2 = quickSortSeuil(array)
 
         # quickSort with seuil and random pivot
         for i in range(0, 10):
-            array3 = deepcopy(tempArray)
-            sortTime3 += quickSortRandomSeuil(array3)
+            array = deepcopy(tempArray)
+            sortTime3 += quickSortRandomSeuil(array)
         sortTime3 += (sortTime3/10)
 
         # countingSort
-        array4 = deepcopy(tempArray)
-        sortTime4 = countingSort(array4)
+        array = deepcopy(tempArray)
+        sortTime4 = countingSort(array)
     
     sortTime1 = round(1000 * sortTime1/10, 3)
     times1.append(sortTime1)
