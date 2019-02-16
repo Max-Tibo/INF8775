@@ -8,6 +8,7 @@ from quick import quickSort
 from quickSeuil import quickSortSeuil
 from quickRandomSeuil import quickSortRandomSeuil
 from counting import countingSort
+from copy import deepcopy
 
 def read_integers(filename):
     with open(filename) as f:
@@ -62,23 +63,24 @@ for size in sizes:
     sortTime4 = 0.0
     for test in range(testset[0], testset[1]):
         file = "../../exemplaires/testset_" + str(size) + "_" + str(test) + ".txt"
+        tempArray = read_integers(file)
         # execute the algorithms 
         # quickSort
-        array1 = read_integers(file)
+        array1 = deepcopy(tempArray)
         sortTime1 = quickSort(array1)
 
         # quickSort with seuil
-        array2 = read_integers(file)
-        sorTime2 = quickSortSeuil(array2)
+        array2 = deepcopy(tempArray)
+        sortTime2 = quickSortSeuil(array2)
 
         # quickSort with seuil and random pivot
         for i in range(0, 10):
-            array3 = read_integers(file)
+            array3 = deepcopy(tempArray)
             sortTime3 += quickSortRandomSeuil(array3)
         sortTime3 += (sortTime3/10)
 
         # countingSort
-        array4 = read_integers(file)
+        array4 = deepcopy(tempArray)
         sortTime4 = countingSort(array4)
     
     sortTime1 = round(1000 * sortTime1/10, 3)
