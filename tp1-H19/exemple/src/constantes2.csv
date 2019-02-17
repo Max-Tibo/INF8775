@@ -1,0 +1,25 @@
+Sample Size,Algorithm,Time
+0.000596,QuickSort,1.788
+0.000627667,QuickSortSeuil,1.883
+0.000733667,QuickSortRandomSeuil,2.201
+15.482206,CountingSort,15482.206
+0.000651695,QuickSort,12.053
+0.000657048,QuickSortSeuil,12.152
+0.00076378,QuickSortRandomSeuil,14.126
+15.3262006,CountingSort,76631.003
+0.000549325,QuickSort,21.973
+0.0005295,QuickSortSeuil,21.18
+0.0006753,QuickSortRandomSeuil,27.012
+15.2705842,CountingSort,152705.842
+0.000546988,QuickSort,128.514
+0.000603983,QuickSortSeuil,141.905
+0.000660289,QuickSortRandomSeuil,155.134
+0,CountingSort,0
+0.000581214,QuickSort,290.607
+0.000583694,QuickSortSeuil,291.847
+0.000634086,QuickSortRandomSeuil,317.043
+0,CountingSort,0
+0.000604638,QuickSort,1722.906
+0.000572975,QuickSortSeuil,1632.683
+0.000654605,QuickSortRandomSeuil,1865.288
+0,CountingSort,0

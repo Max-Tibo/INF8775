@@ -27,6 +27,22 @@ def power_test(csvfile, serie):
     g.add_legend()
     plt.savefig('test_puissance' + serie)
 
+# Create the rapport test graphs from the 3 csv files
+def rapport_test(csvfile,serie):
+    df = pd.read_csv(csvfile).groupby(['Sample Size','Algorithm']).mean().reset_index()
+    g = sns.FacetGrid(df, hue='Algorithm', height=6, aspect=1)
+    g = g.map(plt.plot, 'Sample Size', 'Time')
+    g.add_legend()
+    plt.savefig('test_rapport' + serie)
+
+# Create the constantes test graphs from the 3 csv files
+def constante_test(csvfile,serie):
+    df = pd.read_csv(csvfile)
+    g = sns.FacetGrid(df, hue='Algorithm', height=6, aspect=1)
+    g = g.map(plt.plot, 'Sample Size', 'Time')
+    g.add_legend()
+    plt.savefig('test_constante' + serie)
+
 # Algo ici
 sizes = [1000, 5000, 10000, 50000, 100000, 500000]
 while True:
@@ -73,7 +89,7 @@ with open('results' + input + '.csv', 'w', newline='') as myfile:
         countingSortErr = 0
         for test in range(testset[0], testset[1] + 1):
             columnTitles.append("testset_" + str(size) + "_" + str(test))
-            file = "../../exemplaires/testset_" + str(size) + "_" + str(test) + ".txt"
+            file = "./exemplaires/testset_" + str(size) + "_" + str(test) + ".txt"
             array = []
             tempArray = read_integers(file)
             # execute the algorithms 
@@ -147,4 +163,3 @@ with open('graphresults' + input + '.csv', 'a', newline='') as myfile:
         wr.writerow(resultRow)
         resultRow.clear()        
 
-power_test('graphresults' + input + '.csv', input)
