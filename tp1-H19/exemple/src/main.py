@@ -1,6 +1,7 @@
 import sys
 import time
 import csv
+import math
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
@@ -27,23 +28,6 @@ def power_test(csvfile, serie):
     g.add_legend()
     plt.savefig('test_puissance' + serie)
 
-# Create the rapport test graphs from the 3 csv files
-def rapport_test(csvfile,serie):
-    df = pd.read_csv(csvfile).groupby(['Sample Size','Algorithm']).mean().reset_index()
-    g = sns.FacetGrid(df, hue='Algorithm', height=6, aspect=1)
-    g = g.map(plt.plot, 'Sample Size', 'Time')
-    g.add_legend()
-    plt.savefig('test_rapport' + serie)
-
-# Create the constantes test graphs from the 3 csv files
-def constante_test(csvfile,serie):
-    df = pd.read_csv(csvfile)
-    g = sns.FacetGrid(df, hue='Algorithm', height=6, aspect=1)
-    g = g.map(plt.plot, 'Sample Size', 'Time')
-    g.add_legend()
-    plt.savefig('test_constante' + serie)
-
-# Algo ici
 sizes = [1000, 5000, 10000, 50000, 100000, 500000]
 while True:
     input = input("Enter testset 1-3: ")
@@ -66,9 +50,31 @@ times2 = [] # quickSeuil
 times3 = [] # quickRandomSeuil
 times4 = [] # coutning
 
-# open csv file to write results
-with open('graphresults' + input + '.csv', 'w', newline='') as myfile:
-    columnTitles = ["Sample Size", "Algorithm", "Time"]
+maxValues = [] # temp matrix to store max array value
+
+# open csv file to write results for the different graphs
+with open('pgraphresults' + input + '.csv', 'w', newline='') as myfile:
+    columnTitles = ["Algorithm", "Sample Size", "Time"]
+    wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+    wr.writerow(columnTitles)
+
+with open('cgraphresults_b' + input + '.csv', 'w', newline='') as myfile:
+    columnTitles = ["Algorithm", "Sample Size", "Time"]
+    wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+    wr.writerow(columnTitles)
+
+with open('cgraphresults_w' + input + '.csv', 'w', newline='') as myfile:
+    columnTitles = ["Algorithm", "Sample Size", "Time"]
+    wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+    wr.writerow(columnTitles)
+
+with open('rgraphresults_b' + input + '.csv', 'w', newline='') as myfile:
+    columnTitles = ["Algorithm", "Sample Size", "Time"]
+    wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+    wr.writerow(columnTitles)
+
+with open('rgraphresults_w' + input + '.csv', 'w', newline='') as myfile:
+    columnTitles = ["Algorithm", "Sample Size", "Time"]
     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
     wr.writerow(columnTitles)
 
@@ -89,32 +95,33 @@ with open('results' + input + '.csv', 'w', newline='') as myfile:
         countingSortErr = 0
         for test in range(testset[0], testset[1] + 1):
             columnTitles.append("testset_" + str(size) + "_" + str(test))
-            file = "./exemplaires/testset_" + str(size) + "_" + str(test) + ".txt"
+            file = "../../exemplaires/testset_" + str(size) + "_" + str(test) + ".txt"
             array = []
             tempArray = read_integers(file)
+            maxValues.append(max(tempArray))
             # execute the algorithms 
             # quickSort
             array = deepcopy(tempArray)
-            tmpTime = quickSort(array) * 1000.0
+            tmpTime = round(quickSort(array) * 1000.0, 3)
             quickResults.append(tmpTime)
             sortTime1 += tmpTime
 
             # quickSort with seuil
             array = deepcopy(tempArray)
-            tmpTime = quickSortSeuil(array) * 1000.0
+            tmpTime = round(quickSortSeuil(array) * 1000.0, 3)
             quickSeuilResults.append(tmpTime)
             sortTime2 += tmpTime
 
             # quickSort with seuil and random pivot
             for i in range(0, 10):
                 array = deepcopy(tempArray)
-                tmpTime += quickSortRandomSeuil(array) * 1000.0
+                tmpTime += round(quickSortRandomSeuil(array) * 1000.0, 3)
             quickRandomSeuilResults.append(tmpTime/10.0)
             sortTime3 += (tmpTime/10.0)
 
             # countingSort
             array = deepcopy(tempArray)
-            tmpTime = countingSort(array) * 1000.0
+            tmpTime = round(countingSort(array) * 1000.0, 3)
             countingResults.append(tmpTime)
             if tmpTime > 0:
                 sortTime4 += tmpTime
@@ -138,28 +145,128 @@ with open('results' + input + '.csv', 'w', newline='') as myfile:
     wr.writerow(quickRandomSeuilResults)
     wr.writerow(countingResults)
 
-with open('graphresults' + input + '.csv', 'a', newline='') as myfile:
+with open('pgraphresults' + input + '.csv', 'a', newline='') as myfile:
     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
     for i in range(0, len(sizes)):
         resultRow = []
-        resultRow.append(sizes[i])
         resultRow.append("QuickSort")
+        resultRow.append(sizes[i])
         resultRow.append(times1[i])
         wr.writerow(resultRow)
         resultRow.clear()
-        resultRow.append(sizes[i])
         resultRow.append("QuickSortSeuil")
+        resultRow.append(sizes[i])
         resultRow.append(times2[i])
         wr.writerow(resultRow)
         resultRow.clear()  
-        resultRow.append(sizes[i])      
         resultRow.append("QuickSortRandomSeuil")
+        resultRow.append(sizes[i])      
         resultRow.append(times3[i])
         wr.writerow(resultRow)
         resultRow.clear()
-        resultRow.append(sizes[i])
         resultRow.append("CountingSort")
+        resultRow.append(sizes[i])
         resultRow.append(times4[i])
         wr.writerow(resultRow)
-        resultRow.clear()        
+        resultRow.clear()
+
+with open('cgraphresults_b' + input + '.csv', 'a', newline='') as myfile:
+    wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+    for i in range(0, len(sizes)):
+        resultRow = []
+        resultRow.append("QuickSort")
+        resultRow.append(sizes[i] * math.log10(sizes[i]))
+        resultRow.append(times1[i])
+        wr.writerow(resultRow)
+        resultRow.clear()
+        resultRow.append("QuickSortSeuil")
+        resultRow.append(sizes[i] * math.log10(sizes[i]))
+        resultRow.append(times2[i])
+        wr.writerow(resultRow)
+        resultRow.clear()  
+        resultRow.append("QuickSortRandomSeuil")
+        resultRow.append(sizes[i] * math.log10(sizes[i]))      
+        resultRow.append(times3[i])
+        wr.writerow(resultRow)
+        resultRow.clear()
+        resultRow.append("CountingSort")
+        resultRow.append(sizes[i] * maxValues[i])
+        resultRow.append(times4[i])
+        wr.writerow(resultRow)
+        resultRow.clear()   
+
+with open('cgraphresults_w' + input + '.csv', 'a', newline='') as myfile:
+    wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+    for i in range(0, len(sizes)):
+        resultRow = []
+        resultRow.append("QuickSort")
+        resultRow.append(math.pow(sizes[i], 2))
+        resultRow.append(times1[i])
+        wr.writerow(resultRow)
+        resultRow.clear()
+        resultRow.append("QuickSortSeuil")
+        resultRow.append(math.pow(sizes[i], 2))
+        resultRow.append(times2[i])
+        wr.writerow(resultRow)
+        resultRow.clear()  
+        resultRow.append("QuickSortRandomSeuil")
+        resultRow.append(math.pow(sizes[i], 2))      
+        resultRow.append(times3[i])
+        wr.writerow(resultRow)
+        resultRow.clear()
+        resultRow.append("CountingSort")
+        resultRow.append(sizes[i] * maxValues[i])
+        resultRow.append(times4[i])
+        wr.writerow(resultRow)
+        resultRow.clear()   
+
+with open('rgraphresults_b' + input + '.csv', 'a', newline='') as myfile:
+    wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+    for i in range(0, len(sizes)):
+        resultRow = []
+        resultRow.append("QuickSort")
+        resultRow.append(sizes[i])
+        resultRow.append(times1[i] / (sizes[i] * math.log10(sizes[i])))
+        wr.writerow(resultRow)
+        resultRow.clear()
+        resultRow.append("QuickSortSeuil")
+        resultRow.append(sizes[i])
+        resultRow.append(times2[i] / (sizes[i] * math.log10(sizes[i])))
+        wr.writerow(resultRow)
+        resultRow.clear()  
+        resultRow.append("QuickSortRandomSeuil")
+        resultRow.append(sizes[i])      
+        resultRow.append(times3[i] / (sizes[i] * math.log10(sizes[i])))
+        wr.writerow(resultRow)
+        resultRow.clear()
+        resultRow.append("CountingSort")
+        resultRow.append(sizes[i])
+        resultRow.append(times4[i] / (sizes[i] * maxValues[i]))
+        wr.writerow(resultRow)
+        resultRow.clear()           
+
+with open('rgraphresults_w' + input + '.csv', 'a', newline='') as myfile:
+    wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+    for i in range(0, len(sizes)):
+        resultRow = []
+        resultRow.append("QuickSort")
+        resultRow.append(sizes[i])
+        resultRow.append(times1[i] / math.pow(sizes[i], 2))
+        wr.writerow(resultRow)
+        resultRow.clear()
+        resultRow.append("QuickSortSeuil")
+        resultRow.append(sizes[i])
+        resultRow.append(times2[i] / math.pow(sizes[i], 2))
+        wr.writerow(resultRow)
+        resultRow.clear()  
+        resultRow.append("QuickSortRandomSeuil")
+        resultRow.append(sizes[i])      
+        resultRow.append(times3[i] / math.pow(sizes[i], 2))
+        wr.writerow(resultRow)
+        resultRow.clear()
+        resultRow.append("CountingSort")
+        resultRow.append(sizes[i])
+        resultRow.append(times4[i] / (sizes[i] * maxValues[i]))
+        wr.writerow(resultRow)
+        resultRow.clear()   
 
