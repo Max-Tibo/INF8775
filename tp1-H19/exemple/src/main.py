@@ -78,6 +78,7 @@ with open('rgraphresults_w' + input + '.csv', 'w', newline='') as myfile:
     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
     wr.writerow(columnTitles)
 
+# global results table
 with open('results' + input + '.csv', 'w', newline='') as myfile:
     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
     columnTitles = ["Algorithm"]
@@ -139,12 +140,14 @@ with open('results' + input + '.csv', 'w', newline='') as myfile:
         else: sortTime4 = 0.0
         times4.append(sortTime4)
 
+    # write in the results table
     wr.writerow(columnTitles)
     wr.writerow(quickResults)
     wr.writerow(quickSeuilResults)
     wr.writerow(quickRandomSeuilResults)
     wr.writerow(countingResults)
 
+# for all the types of tests, write the appropriate results with transformations
 with open('pgraphresults' + input + '.csv', 'a', newline='') as myfile:
     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
     for i in range(0, len(sizes)):
